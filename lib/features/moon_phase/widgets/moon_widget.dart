@@ -34,7 +34,7 @@ class _AppleStyleMoonState extends State<AppleStyleMoon> {
 
   Future<void> _loadImage() async {
     final String assetPath =
-        'assets/images/full_moon.png';
+        'packages/moon_phases_extra/assets/images/full_moon.png';
     final data = await rootBundle.load(assetPath);
     final codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
     final frame = await codec.getNextFrame();

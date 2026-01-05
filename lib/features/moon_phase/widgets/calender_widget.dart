@@ -126,7 +126,7 @@ class CalenderWidget extends StatelessWidget {
           MoonWidget.image(
             date: date,
             size: 15,
-            backgroundImageAsset: 'assets/images/full_moon.png',
+            backgroundImageAsset: 'packages/moon_phases_extra/assets/images/full_moon.png',
             earthshineColor: Colors.grey.shade900,
           ),
         ],
