@@ -20,7 +20,7 @@ class MoonDataWidget extends StatelessWidget {
         children: [
           // Illumination
           _buildRow(
-            title: StringsManager.illumination,
+            title: StringsManager.illumination(),
             value: "${PublicVariables.illumination}%",
           ),
 

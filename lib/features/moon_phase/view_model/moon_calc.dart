@@ -29,21 +29,21 @@ class MoonCalc {
 
     String name = "";
     if (cyclePos < 0.02 || cyclePos > 0.98) {
-      name = StringsManager.newMoon;
+      name = StringsManager.newMoon();
     } else if ((cyclePos - 0.5).abs() < 0.02) {
-      name = StringsManager.fullMoon;
+      name = StringsManager.fullMoon();
     } else if ((cyclePos - 0.25).abs() < 0.02) {
-      name = StringsManager.firstQuarter; // Added for precision
+      name = StringsManager.firstQuarter(); // Added for precision
     } else if ((cyclePos - 0.75).abs() < 0.02) {
-      name = StringsManager.lastQuarter; // Added for precision
+      name = StringsManager.lastQuarter(); // Added for precision
     } else if (cyclePos < 0.25) {
-      name = StringsManager.waxingCrescent;
+      name = StringsManager.waxingCrescent();
     } else if (cyclePos < 0.5) {
-      name = StringsManager.waxingGibbous;
+      name = StringsManager.waxingGibbous();
     } else if (cyclePos < 0.75) {
-      name = StringsManager.waningGibbous;
+      name = StringsManager.waningGibbous();
     } else {
-      name = StringsManager.waningCrescent;
+      name = StringsManager.waningCrescent();
     }
 
     return MoonPhaseData(daysOld, illumination, isWaxing, name);

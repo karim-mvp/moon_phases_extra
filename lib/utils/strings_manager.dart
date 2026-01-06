@@ -1,25 +1,31 @@
 import 'package:moon_phases_extra/utils/public_variables.dart';
 
 class StringsManager {
-  static final bool _isEnglish = PublicVariables.currentLanguage == 'en';
+  static bool get _isEnglish => PublicVariables.currentLanguage == 'en';
 
-  static String get illumination => _isEnglish ? 'Illumination' : 'الإضاءة';
-  static String get moonrise => _isEnglish ? 'Moonrise' : 'شروق القمر';
-  static String get moonset => _isEnglish ? 'Moonset' : 'غروب القمر';
+  // Helper method
+  static String _arEn({required String ar, required String en}) {
+    return _isEnglish ? en : ar;
+  }
+
+  // UI Strings
+  static String illumination() => _arEn(en: 'Illumination', ar: 'الإضاءة');
+  static String moonrise() => _arEn(en: 'Moonrise', ar: 'شروق القمر');
+  static String moonset() => _arEn(en: 'Moonset', ar: 'غروب القمر');
 
   // Moon Phases
-  static String get newMoon => _isEnglish ? 'New Moon' : 'محاق';
-  static String get waxingCrescent =>
-      _isEnglish ? 'Waxing Crescent' : 'هلال متزايد';
-  static String get firstQuarter =>
-      _isEnglish ? 'First Quarter' : 'التربيع الأول';
-  static String get waxingGibbous =>
-      _isEnglish ? 'Waxing Gibbous' : 'أحدب متزايد';
-  static String get fullMoon => _isEnglish ? 'Full Moon' : 'بدر';
-  static String get waningGibbous =>
-      _isEnglish ? 'Waning Gibbous' : 'أحدب متناقص';
-  static String get lastQuarter =>
-      _isEnglish ? 'Last Quarter' : 'التربيع الأخير';
-  static String get waningCrescent =>
-      _isEnglish ? 'Waning Crescent' : 'هلال متناقص';
+  static String newMoon() => _arEn(en: 'New Moon', ar: 'محاق');
+  static String waxingCrescent() =>
+      _arEn(en: 'Waxing Crescent', ar: 'هلال متزايد');
+  static String firstQuarter() =>
+      _arEn(en: 'First Quarter', ar: 'التربيع الأول');
+  static String waxingGibbous() =>
+      _arEn(en: 'Waxing Gibbous', ar: 'أحدب متزايد');
+  static String fullMoon() => _arEn(en: 'Full Moon', ar: 'بدر');
+  static String waningGibbous() =>
+      _arEn(en: 'Waning Gibbous', ar: 'أحدب متناقص');
+  static String lastQuarter() =>
+      _arEn(en: 'Last Quarter', ar: 'التربيع الأخير');
+  static String waningCrescent() =>
+      _arEn(en: 'Waning Crescent', ar: 'هلال متناقص');
 }
