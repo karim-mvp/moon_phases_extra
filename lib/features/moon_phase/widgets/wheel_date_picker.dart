@@ -89,6 +89,10 @@ class _DateWheelPickerState extends State<DateWheelPicker> {
       Duration(hours: _currentIndex * hourStep),
     );
 
+    PublicVariables.setIllumination(
+      (PublicVariables.phaseData.illumination * 100).toInt(),
+    );
+
     // Determine language and direction
     final String currentLocale = PublicVariables.currentLanguage;
     final bool isRtl = currentLocale == 'ar';

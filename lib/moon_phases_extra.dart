@@ -20,13 +20,7 @@ class AppMoonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => MoonPhaseViewModel(),
-      child: Directionality(
-        textDirection:
-            PublicVariables.currentLanguage == "ar"
-                ? TextDirection.rtl
-                : TextDirection.ltr,
-        child: MoonPhaseView(),
-      ),
+      child: MoonPhaseView(),
     );
   }
 }

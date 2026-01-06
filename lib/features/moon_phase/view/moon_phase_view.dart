@@ -41,67 +41,75 @@ class _MoonPhaseViewState extends State<MoonPhaseView> {
       MoonCalc.getPhase(context.watch<MoonPhaseViewModel>().selectedDate),
     );
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Consumer<MoonPhaseViewModel>(
-            builder: (context, viewModel, _) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 40),
+    final TextDirection textDirection =
+        PublicVariables.currentLanguage == "ar"
+            ? TextDirection.rtl
+            : TextDirection.ltr;
 
-                  // Moon
-                  Center(
-                    child: Transform.rotate(
-                      angle: angle,
-                      child: AppleStyleMoon(
-                        date: viewModel.selectedDate,
-                        size: MediaQuery.sizeOf(context).width * 0.6,
-                        phaseData: PublicVariables.phaseData,
-                        rotation: math.pi / 9,
+    return Directionality(
+      textDirection: textDirection,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Consumer<MoonPhaseViewModel>(
+              builder: (context, viewModel, _) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 40),
+
+                    // Moon
+                    Center(
+                      child: Transform.rotate(
+                        angle: angle,
+                        child: AppleStyleMoon(
+                          date: viewModel.selectedDate,
+                          size: MediaQuery.sizeOf(context).width * 0.6,
+                          phaseData: PublicVariables.phaseData,
+                          rotation: math.pi / 9,
+                        ),
                       ),
                     ),
-                  ),
 
-                  // Moon Data
-                  Text(
-                    PublicVariables.phaseData.phaseName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
+                    // Moon Data
+                    Text(
+                      PublicVariables.phaseData.phaseName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
 
-                  // Date Picker
-                  DateWheelPicker(
-                    initialDate: viewModel.selectedDate,
-                    from: viewModel.startDate,
-                    to: viewModel.endDate,
-                    onDateChanged: (date) {
-                      viewModel.setSelectedDate(date);
-                    },
-                  ),
+                    // Date Picker
+                    DateWheelPicker(
+                      initialDate: viewModel.selectedDate,
+                      from: viewModel.startDate,
+                      to: viewModel.endDate,
+                      onDateChanged: (date) {
+                        viewModel.setSelectedDate(date);
+                      },
+                    ),
 
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                  // Moon Data
-                  MoonDataWidget(),
+                    // Moon Data
+                    MoonDataWidget(),
 
-                  const SizedBox(height: 40),
+                    const SizedBox(height: 40),
 
-                  // Calender
-                  CalenderWidget(
-                    startDate: viewModel.startDate,
-                    endDate: viewModel.endDate,
-                    selectedDate: viewModel.selectedDate,
-                    setSelectedDate: viewModel.setSelectedDate,
-                  ),
-                ],
-              );
-            },
+                    // Calender
+                    CalenderWidget(
+                      startDate: viewModel.startDate,
+                      endDate: viewModel.endDate,
+                      selectedDate: viewModel.selectedDate,
+                      setSelectedDate: viewModel.setSelectedDate,
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
