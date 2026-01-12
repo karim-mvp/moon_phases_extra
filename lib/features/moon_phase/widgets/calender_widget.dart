@@ -1,47 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:moon_phase/moon_widget.dart';
+import 'package:moon_phases_extra/features/moon_phase/model/date_hijri_prayer_model.dart';
 import 'package:moon_phases_extra/utils/public_variables.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalenderWidget extends StatelessWidget {
+  final bool showHijri;
+  final List<DateHijriPrayer> dates;
+  final DateTime selectedDate;
   final DateTime startDate;
   final DateTime endDate;
-  final DateTime selectedDate;
   final void Function(DateTime) setSelectedDate;
 
   const CalenderWidget({
     super.key,
+    required this.showHijri,
+    required this.dates,
+    required this.selectedDate,
     required this.startDate,
     required this.endDate,
-    required this.selectedDate,
     required this.setSelectedDate,
   });
 
+  HijriDate hijriDate(DateTime dateTime) {
+    if (dates.isEmpty) {
+      return HijriDate();
+    }
+
+    return dates.firstWhere((element) {
+      final day = element.gregorianDate?.day == dateTime.day;
+      final month = element.gregorianDate?.month == dateTime.month;
+      final year = element.gregorianDate?.year == dateTime.year;
+      return day && month && year;
+    }).hijriDate!;
+  }
+
+  String get title {
+    if (showHijri) {
+      return hijriDate(selectedDate).monthName ?? "-";
+    }
+
+    return selectedDate.month.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Determine language and direction
     final String currentLocale = PublicVariables.currentLanguage;
     final bool isRtl = currentLocale == 'ar';
 
     return Directionality(
-      // This ensures the header arrows and day flow flip for Arabic
       textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
       child: Container(
-        // Using Directional padding is best practice for packages
         padding: const EdgeInsetsDirectional.only(top: 20, bottom: 50),
         color: Colors.grey.shade800,
         child: TableCalendar(
-          // 1. Set the locale for month names and day labels
           locale: currentLocale,
 
           calendarBuilders: CalendarBuilders(
             todayBuilder: (context, day, focusedDay) {
               final selected = isSameDay(day, selectedDate);
-              return _dayWidget(selected: selected, date: day);
+              return _dayWidget(
+                showHijri: showHijri,
+                selected: selected,
+                date: day,
+                hijriDate: hijriDate(day),
+              );
             },
             defaultBuilder: (context, day, focusedDay) {
               final selected = isSameDay(day, selectedDate);
-              return _dayWidget(selected: selected, date: day);
+              return _dayWidget(
+                showHijri: showHijri,
+                selected: selected,
+                date: day,
+                hijriDate: hijriDate(day),
+              );
             },
             selectedBuilder: (context, day, focusedDay) {
               return Container(
@@ -60,8 +92,8 @@ class CalenderWidget extends StatelessWidget {
             },
           ),
           calendarFormat: CalendarFormat.month,
-          firstDay: startDate,
-          lastDay: endDate,
+          firstDay: dates.isNotEmpty ? dates.first.gregorianDate! : startDate,
+          lastDay: dates.isNotEmpty ? dates.last.gregorianDate! : endDate,
           focusedDay: selectedDate,
           availableGestures: AvailableGestures.none,
           onDaySelected: (selectedDay, focusedDay) {
@@ -100,17 +132,27 @@ class CalenderWidget extends StatelessWidget {
               Icons.chevron_right,
               color: Colors.white,
             ),
+            titleTextFormatter:
+                showHijri
+                    ? (date, locale) {
+                      return title;
+                    }
+                    : null,
           ),
         ),
       ),
     );
   }
 
-  Widget _dayWidget({required bool selected, required DateTime date}) {
+  Widget _dayWidget({
+    required bool showHijri,
+    required bool selected,
+    required DateTime date,
+    required HijriDate hijriDate,
+  }) {
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        // Using withValues or withOpacity is preferred in newer Flutter versions
         // ignore: deprecated_member_use
         color: selected ? Colors.blue.withOpacity(0.4) : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
@@ -119,14 +161,17 @@ class CalenderWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            date.day.toString(),
+            showHijri && dates.isNotEmpty
+                ? hijriDate.day.toString()
+                : date.day.toString(),
             style: const TextStyle(color: Colors.white),
           ),
 
           MoonWidget.image(
             date: date,
             size: 15,
-            backgroundImageAsset: 'packages/moon_phases_extra/assets/images/full_moon.png',
+            backgroundImageAsset:
+                'packages/moon_phases_extra/assets/images/full_moon.png',
             earthshineColor: Colors.grey.shade900,
           ),
         ],

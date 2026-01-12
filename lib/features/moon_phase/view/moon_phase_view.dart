@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:moon_phases_extra/features/moon_phase/view_model/moon_calc.dart';
 import 'package:moon_phases_extra/features/moon_phase/view_model/moon_phase_view_model.dart';
@@ -41,10 +42,10 @@ class _MoonPhaseViewState extends State<MoonPhaseView> {
       MoonCalc.getPhase(context.watch<MoonPhaseViewModel>().selectedDate),
     );
 
+    final bool isArabic = PublicVariables.currentLanguage == "ar";
+
     final TextDirection textDirection =
-        PublicVariables.currentLanguage == "ar"
-            ? TextDirection.rtl
-            : TextDirection.ltr;
+        isArabic ? TextDirection.rtl : TextDirection.ltr;
 
     return Directionality(
       textDirection: textDirection,
@@ -58,6 +59,50 @@ class _MoonPhaseViewState extends State<MoonPhaseView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 40),
+
+                    // Toggle Hijri/Gregorian
+                    if (viewModel.dates.isNotEmpty) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              isArabic ? "هجري" : "Hijri",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            Transform.scale(
+                              scale: 0.8,
+                              child: CupertinoSwitch(
+                                trackOutlineColor: WidgetStatePropertyAll(
+                                  Colors.grey.shade200,
+                                ),
+                                value: viewModel.showHijri,
+                                onChanged: (value) {
+                                  viewModel.setShowHijri(value);
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              isArabic ? "الميلادي" : "Gregorian",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
 
                     // Moon
                     Center(
@@ -101,6 +146,8 @@ class _MoonPhaseViewState extends State<MoonPhaseView> {
 
                     // Calender
                     CalenderWidget(
+                      showHijri: viewModel.showHijri,
+                      dates: viewModel.dates,
                       startDate: viewModel.startDate,
                       endDate: viewModel.endDate,
                       selectedDate: viewModel.selectedDate,
