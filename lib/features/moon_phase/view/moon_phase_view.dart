@@ -92,7 +92,7 @@ class _MoonPhaseViewState extends State<MoonPhaseView> {
                             ),
                             const SizedBox(width: 5),
                             Text(
-                              isArabic ? "الميلادي" : "Gregorian",
+                              isArabic ? "ميلادي" : "Gregorian",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
