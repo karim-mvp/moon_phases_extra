@@ -80,14 +80,26 @@ class _MoonPhaseViewState extends State<MoonPhaseView> {
                             const SizedBox(width: 5),
                             Transform.scale(
                               scale: 0.8,
-                              child: CupertinoSwitch(
-                                trackOutlineColor: WidgetStatePropertyAll(
-                                  Colors.grey.shade200,
+                              child: Directionality(
+                                textDirection:
+                                    isArabic
+                                        ? TextDirection.ltr
+                                        : TextDirection.rtl,
+                                child: CupertinoSwitch(
+                                  activeTrackColor: Color.fromARGB(
+                                    255,
+                                    189,
+                                    168,
+                                    131,
+                                  ),
+                                  trackOutlineColor: WidgetStatePropertyAll(
+                                    Colors.grey.shade200,
+                                  ),
+                                  value: viewModel.showHijri,
+                                  onChanged: (value) {
+                                    viewModel.setShowHijri(value);
+                                  },
                                 ),
-                                value: viewModel.showHijri,
-                                onChanged: (value) {
-                                  viewModel.setShowHijri(value);
-                                },
                               ),
                             ),
                             const SizedBox(width: 5),
